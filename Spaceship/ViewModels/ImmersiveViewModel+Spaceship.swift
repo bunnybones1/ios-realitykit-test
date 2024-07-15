@@ -15,8 +15,6 @@ extension ImmersiveViewModel {
         let spaceship = try await createSpaceship()
         spaceship.position = spaceshipInitialPosition()
         spaceship.fadeOpacity(from: 0, to: 1, duration: 1)
-        try await spaceshipAudio.prepareAudio(for: spaceship)
-        spaceshipAudio.play()
         return spaceship
     }
 
@@ -30,13 +28,7 @@ extension ImmersiveViewModel {
 
         // Configure it for flight
         spaceship.components.set(PhysicsMotionComponent())
-        spaceship.components.set(ShipFlightComponent())
-        spaceship.components.set(PrimaryThrustComponent())
-        spaceship.components.set(EnvironmentLightingFadeComponent())
-        spaceship.components.set(ShipVisualsComponent())
-        spaceship.components.set(ShipAudioComponent())
-        spaceship.components.set(AudioMaterialComponent(material: .plastic))
-
+        
         // Add the spaceship to our scene
         rootEntity.addChild(spaceship)
 
@@ -51,9 +43,7 @@ extension ImmersiveViewModel {
 
         guard let spaceship else { return }
 
-        spaceship.components.remove(ShipControlComponent.self)
         spaceship.fadeOpacity(from: 1, to: 0, duration: 1)
-        try await spaceshipAudio.fadeOut()
 
         try await Task.sleep(for: .seconds(1))
 
@@ -63,7 +53,7 @@ extension ImmersiveViewModel {
 
     func spaceshipInitialPosition() -> SIMD3<Float> {
 
-        let offsetFromDevice: SIMD3<Float> = [0, -0.25, -0.75]
+        let offsetFromDevice: SIMD3<Float> = [0, 0.5, -0.75]
 
 #if os(visionOS)
         let fallbackPosition: SIMD3<Float> = [0, 1.3, -1]

@@ -11,20 +11,6 @@ import RealityKit
 @Observable
 final class AppModel {
 
-    var gamePhase: GamePhase = .joyRide
-
-    var isPresentingAudioMixer = false
-    var isPresentingHangar = false
-    var isPresentingFlightSchool = false
-    var isPresentingImmersiveSpace = false
-    var wantsToPresentImmersiveSpace = false
-
-    var isTransitioningBetweenSurroundings = false
-    var isTransitioningBetweenGamePhases = false
-
-    var shipControlParameters = ShipControlParameters()
-
-    var audioMixer = AudioMixerStorage()
 
 #if os(visionOS)
     var surroundings: Surroundings = .passthrough
@@ -34,17 +20,4 @@ final class AppModel {
         immersionStyle = surroundings.immersionStyle
     }
 #endif
-}
-
-enum GamePhase: String, CaseIterable {
-
-    case joyRide
-    case work
-
-    var displayName: String {
-        switch self {
-        case .joyRide: "Joy Ride"
-        case .work: "Work"
-        }
-    }
 }

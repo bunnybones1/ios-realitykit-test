@@ -17,30 +17,39 @@ final class ImmersiveViewModel {
     let headTrackingProvider = WorldTrackingProvider()
 #endif
 
-    let audio = AudioStorage()
-    let planetsAudio = PlanetsAudioStorage()
-    let spaceshipAudio = SpaceshipAudioStorage()
-    let immersiveEnvironment = ImmersiveEnvironmentStorage()
 
     let rootEntity = Entity()
     var spaceship: ModelEntity?
-    var trailer: Entity?
-    var astronomicalObjects: Entity?
 
     static var debounceThreshold = 0.05
     var debounce: [UnorderedPair<Entity>: TimeInterval] = [:]
 
-    var gameLevel = 1
 
     init() {
         configureRoot()
-        configureAmbientMusicSource()
-        rootEntity.addChild(immersiveEnvironment.entity)
 #if os(visionOS)
         Task {
             try await headTrackingSession.run([headTrackingProvider])
         }
 #endif
+        
+        
+        // Create a cube entity
+        let mesh = MeshResource.generateBox(size: 0.3)
+        let material = SimpleMaterial(color: .blue, isMetallic: true)
+        let cubeEntity = ModelEntity(mesh: mesh, materials: [material])
+        
+        // Create an anchor entity and add the cube entity to it
+        let anchorEntity = AnchorEntity(plane: .any)
+        anchorEntity.addChild(cubeEntity)
+        rootEntity.addChild(anchorEntity)
+        
+        
+        let offsetFromDevice: SIMD3<Float> = [0, 0.75, -0.75]
+        anchorEntity.position = offsetFromDevice
+        
+        // Add the anchor entity to the ARView scene
+//        arView.scene.addAnchor(anchorEntity)
     }
 
     func configureRoot() {

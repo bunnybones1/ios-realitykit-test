@@ -42,8 +42,7 @@ extension Entity {
                 shapes: [
                     bodyCollisionShape,
                     wingsCollisionShape
-                ],
-                filter: .init(group: .actualEarthGravity, mask: .all)
+                ]
             )
         )
 
@@ -57,10 +56,6 @@ extension Entity {
             try await configureEngineAudioSource(on: engine)
         }
 
-        spaceship.components.set(ThrottleComponent())
-        spaceship.components.set(PitchRollComponent())
-        spaceship.components.set(ShipAudioComponent())
-        spaceship.components.set(ShipVisualsComponent())
 
         return spaceship
     }
@@ -81,7 +76,7 @@ extension Entity {
             spotLight.outerAngleInDegrees = 60
             
             var spotLightShadow = SpotLightComponent.Shadow()
-            spotLightShadow.zFar = 20
+//            spotLightShadow.zFar = 20
             headLightEntity.components.set([spotLight, spotLightShadow])
         }
     }
@@ -152,9 +147,6 @@ extension Entity {
             var collision = CollisionComponent(
                 shapes: [.generateBox(size: .init(repeating: 0.01))]
             )
-            collision.filter = .init(group: .actualEarthGravity, mask: .all)
-
-            piece.components.set(AudioMaterialComponent(material: .plastic))
 
             piece.components.set(collision)
         }

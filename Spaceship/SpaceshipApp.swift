@@ -117,40 +117,11 @@ struct SpaceshipApp: App {
         Group {
             WindowGroup {
                 ZStack {
-                    if appModel.isPresentingImmersiveSpace {
-                        ZStack {
-                            ImmersiveView()
-                                .environment(appModel)
+                        ImmersiveView()
+                            .environment(appModel)
 
-                            MultiTouchControlView(controlParameters: appModel.shipControlParameters)
-                        }
-                    }
-
-                    if appModel.isPresentingHangar {
-                        HangarView()
-                    }
-
-                    if appModel.isPresentingAudioMixer {
-                        AudioMixerView(mixer: appModel.audioMixer)
-                            .frame(width: 200)
-                            .padding(20)
-                            .background(.thickMaterial, in: RoundedRectangle(cornerRadius: 20))
-                            .anchorToTopRight()
-                    }
-
-                    DisclosureGroup("Menu", isExpanded: $isMenuExpanded) {
-                        MenuView(appModel: appModel)
-                    }
-                    .frame(width: isMenuExpanded ? 300 : 80)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-                    .background(.thickMaterial, in: RoundedRectangle(cornerRadius: 20))
-                    .anchorToTopLeft()
                 }
                 .ignoresSafeArea()
-            }
-            .onChange(of: appModel.wantsToPresentImmersiveSpace) {
-                appModel.isPresentingImmersiveSpace = true
             }
         }
     }
